@@ -514,13 +514,13 @@ class cl_methods:
         # Interpret and execute ulist method
         if "mode" in message:
             if message["mode"] in ["set", "add", "remove"]:
-                match message["mode"]:
-                    case "set":
+                if True:
+                    if message["mode"] =="set":
                         room_data.userlist = message["val"]
-                    case "add":
+                    if message["mode"] =="add":
                         if not message["val"] in room_data.userlist:
                             room_data.userlist.append(message["val"])
-                    case "remove":
+                    if message["mode"] =="remove":
                         if message["val"] in room_data.userlist:
                             room_data.userlist.remove(message["val"])
             else:
@@ -554,18 +554,18 @@ class cl_methods:
         if listener:
             if listener in [self.parent.handshake_listener, self.parent.setid_listener]:
                 human_ok, machine_ok = self.supporter.generate_statuscode("OK")
-                match listener:
-                    case self.parent.handshake_listener:
+                if True:
+                    if listener == self.parent.handshake_listener:
                         if (message["code"] == human_ok) or (message["code_id"] == machine_ok):
                             self.parent.__fire_event__(self.parent.events.on_connect)
                         else:
                             await self.parent.shutdown()
-                    case self.parent.setid_listener:
+                    if listener == self.parent.setid_listener:
                         if (message["code"] == human_ok) or (message["code_id"] == machine_ok):
                             self.parent.username_set = True
                             self.parent.client_id = message["val"]
                             self.parent.__fire_event__(self.parent.events.on_username_set)
-                    case self.parent.ping_listener:
+                    if listener == self.parent.ping_listener:
                         self.parent.__fire_event__(self.parent.events.on_pong)
             else:
                 self.parent.__fire_method_callbacks__(self.statuscode, message, listener)

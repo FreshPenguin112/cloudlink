@@ -120,16 +120,16 @@ class cl_methods:
             sizes=validator["sizes"]
         )
 
-        match validation:
-            case self.supporter.invalid:
+        if True:
+            if validation == self.supporter.invalid:
                 # Command datatype is invalid
                 await self.parent.send_code(client, "DataType", listener=listener)
                 return False
-            case self.supporter.missing_key:
+            if validation == self.supporter.missing_key:
                 # Command syntax is invalid
                 await self.parent.send_code(client, "Syntax", listener=listener)
                 return False
-            case self.supporter.too_large:
+            if validation == self.supporter.too_large:
                 # Payload size overload
                 await self.parent.send_code(client, "TooLarge", listener=listener)
                 return False

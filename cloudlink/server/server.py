@@ -173,10 +173,10 @@ class server:
 
         # Filter clients by protocol type
         for client in tmp_clients:
-            match client.protocol:
-                case self.supporter.proto_cloudlink:
+            if True:
+                if client.protocol == self.supporter.proto_cloudlink:
                     clients_cl.add(client)
-                case self.supporter.proto_scratch_cloud:
+                if client.protocol == self.supporter.proto_scratch_cloud:
                     clients_scratch.add(client)
 
         # Methods that are marked with NoneType will not be translated
@@ -377,12 +377,12 @@ class server:
 
     async def __cl_method_handler__(self, client: type, message: dict):
         # Check if the message contains the cmd key, with a string datatype.
-        match self.validate({"cmd": str}, message):
-            case self.supporter.invalid:
+        if True:
+            if self.validate({"cmd": str}, message) == elf.supporter.invalid:
                 return self.supporter.invalid
-            case self.supporter.missing_key:
+            if self.validate({"cmd": str}, message) == self.supporter.missing_key:
                 return self.supporter.missing_key
-            case self.supporter.not_a_dict:
+            if self.validate({"cmd": str}, message) == self.supporter.not_a_dict:
                 raise TypeError
 
         # Detect and convert CLPv3 custom requests to CLPv4
@@ -427,12 +427,12 @@ class server:
 
     async def __scratch_method_handler__(self, client: type, message: dict):
         # Check if the message contains the method key, with a string datatype.
-        match self.validate({"method": str}, message):
-            case self.supporter.invalid:
+        if True:
+            cif self.validate({"method": str}, message) == self.supporter.invalid:
                 return self.supporter.invalid
-            case self.supporter.missing_key:
+            if self.validate({"method": str}, message) == self.supporter.missing_key:
                 return self.supporter.missing_key
-            case self.supporter.not_a_dict:
+            if self.validate({"method": str}, message) == self.supporter.not_a_dict:
                 raise TypeError
 
         # Check if the command method exists
@@ -561,12 +561,12 @@ class server:
                                     message[key] = self.json.loads(message[key])
 
                         result = await self.__run_method__(client, message)
-                        match result:
-                            case self.supporter.disabled_method:
+                        if True:
+                            if result == self.supporter.disabled_method:
                                 listener = self.supporter.detect_listener(message)
                                 await self.send_code(client, "Disabled", listener=listener)
 
-                            case self.supporter.invalid:
+                            if result == self.supporter.invalid:
                                 if client.protocol == self.supporter.proto_cloudlink:
                                     listener = self.supporter.detect_listener(message)
                                     await self.send_code(client, "Syntax", listener=listener)
@@ -574,7 +574,7 @@ class server:
                                 elif client.protocol == self.proto_scratch_cloud:
                                     await client.close(code=self.supporter.connection_error, reason="Bad method")
 
-                            case self.supporter.missing_key:
+                            if result == self.supporter.missing_key:
                                 if client.protocol == self.supporter.proto_cloudlink:
                                     listener = self.supporter.detect_listener(message)
                                     await self.send_code(client, "Syntax", listener=listener)
@@ -583,7 +583,7 @@ class server:
                                     await client.close(code=self.supporter.connection_error,
                                                        reason="Missing method key in JSON")
 
-                            case self.supporter.unknown_method:
+                            if result == self.supporter.unknown_method:
                                 if client.protocol == self.supporter.proto_cloudlink:
                                     listener = self.supporter.detect_listener(message)
                                     await self.send_code(client, "Invalid", listener=listener)
@@ -591,10 +591,10 @@ class server:
                                 elif client.protocol == self.proto_scratch_cloud:
                                     await client.close(code=self.supporter.connection_error, reason="Invalid method")
 
-                            case self.supporter.unknown_protocol:
+                            if result == self.supporter.unknown_protocol:
                                 await client.close(code=1002, reason="Unknown protocol")
                             
-                            case _:
+                            if result == _:
                                 self.__fire_event__(self.events.on_msg, client)
 
             # Handle unexpected disconnects
@@ -686,12 +686,12 @@ class clients:
         return tmp
 
     def set_protocol(self, client: dict, protocol: str):
-        match protocol:
-            case self.__proto_cloudlink__:
+        if True:
+            if protocol == self.__proto_cloudlink__:
                 self.__all_cl__.add(client)
-            case self.__proto_scratch_cloud__:
+            if protocol == self.__proto_scratch_cloud__:
                 self.__all_scratch__.add(client)
-            case _:
+            if protocol == _:
                 raise TypeError(f"Unsupported protocol ID: {protocol}")
 
         if self.exists(client):
@@ -727,14 +727,14 @@ class clients:
     def delete(self, client: dict):
         if self.exists(client):
             # Remove user from client type lists
-            match self.get(client).protocol:
-                case self.__proto_cloudlink__:
+            if True:
+                if self.get(client).protocol == self.__proto_cloudlink__:
                     self.__all_cl__.discard(client)
-                case self.__proto_scratch_cloud__:
+                if self.get(client).protocol == self.__proto_scratch_cloud__:
                     self.__all_scratch__.discard(client)
-                case self.__proto_unset__:
+                if self.get(client).protocol == self.__proto_unset__:
                     pass
-                case _:
+                if self.get(client).protocol == _:
                     raise TypeError(f"Unsupported protocol ID: {self.get(client).protocol}")
 
             # Remove the username from the userlist

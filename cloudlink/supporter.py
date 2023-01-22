@@ -178,10 +178,10 @@ class supporter:
             message
         )
 
-        match validation:
-            case self.invalid:
+        if True:
+            if validation == self.invalid:
                 return None
-            case self.missing_key:
+            if validation == self.missing_key:
                 return None
 
         return message["listener"]

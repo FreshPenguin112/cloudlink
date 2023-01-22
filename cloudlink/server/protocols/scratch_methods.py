@@ -85,16 +85,16 @@ class scratch_methods:
             sizes=validator["sizes"]
         )
 
-        match validation:
-            case self.supporter.invalid:
+        if True:
+            if validation == self.supporter.invalid:
                 # Command datatype is invalid
                 await client.close(code=self.supporter.connection_error, reason="Invalid datatype error")
                 return False
-            case self.supporter.missing_key:
+            if validation == self.supporter.missing_key:
                 # Command syntax is invalid
                 await client.close(code=self.supporter.connection_error, reason="Syntax error")
                 return False
-            case self.supporter.too_large:
+            if validation == self.supporter.too_large:
                 # Payload size overload
                 await client.close(code=self.supporter.connection_error, reason="Contents too large")
                 return False
