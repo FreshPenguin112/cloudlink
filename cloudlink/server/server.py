@@ -428,7 +428,7 @@ class server:
     async def __scratch_method_handler__(self, client: type, message: dict):
         # Check if the message contains the method key, with a string datatype.
         if True:
-            cif self.validate({"method": str}, message) == self.supporter.invalid:
+            if self.validate({"method": str}, message) == self.supporter.invalid:
                 return self.supporter.invalid
             if self.validate({"method": str}, message) == self.supporter.missing_key:
                 return self.supporter.missing_key
